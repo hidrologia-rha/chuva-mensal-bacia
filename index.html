@@ -99,27 +99,27 @@
  <aside>
   <label for="rec">Recorte</label>
   <select id="rec"></select>
-  <label for="periodo">Mês de referência</label>
+  <label for="periodo">M\u00eas de refer\u00eancia</label>
   <select id="periodo"></select>
   <label for="opac">Opacidade <span id="opv">85%</span></label>
   <input type="range" id="opac" min="0" max="1" step="0.05" value="0.85">
   <div class="destaque">
-    <div class="v" id="big">—</div>
-    <div class="l">Chuva média no recorte</div>
+    <div class="v" id="big">\u2014</div>
+    <div class="l">Chuva m\u00e9dia no recorte</div>
     <div class="a" id="anom"></div>
     <div class="r" id="rank"></div>
   </div>
   <div class="dica">Clique no mapa para trocar de sub-bacia</div>
-  <h2>Evolução mensal <span id="sparkinfo"></span></h2>
+  <h2>Evolu\u00e7\u00e3o mensal <span id="sparkinfo"></span></h2>
   <svg id="spark"></svg>
   <h2>Resumo</h2>
   <table id="stats"></table>
-  <h2>Meses mais secos <span>da série</span></h2>
+  <h2>Meses mais secos <span>da s\u00e9rie</span></h2>
   <table id="extremos"></table>
-  <h2>Distribuição por classe</h2>
+  <h2>Distribui\u00e7\u00e3o por classe</h2>
   <table id="classes"></table>
   <a class="btn" id="dl" href="#" download>Baixar GeoTIFF</a>
-  <a class="btn sec" href="serie_subbacias.csv" download>Baixar série em CSV</a>
+  <a class="btn sec" href="serie_subbacias.csv" download>Baixar s\u00e9rie em CSV</a>
   <div class="foot">
     Fonte: CHIRPS v2.0 (UCSB/Climate Hazards Center).<br>
     Recorte: Bacia do Rio Madeira e sub-bacias.<br>
@@ -130,7 +130,7 @@
  <div class="mapbox">
    <div id="map"></div>
    <div class="timebar">
-     <button class="tb-btn" id="play" title="Reproduzir (barra de espaço)">▶</button>
+     <button class="tb-btn" id="play" title="Reproduzir (barra de espa\u00e7o)">&#9654;</button>
      <div class="tb-slider">
        <input type="range" id="tslider" min="0" max="0" step="1" value="0">
        <div class="tb-ticks" id="ticks"></div>
@@ -138,10 +138,10 @@
      <select class="tb-speed" id="speed" title="Velocidade">
        <option value="1400">Lento</option>
        <option value="800" selected>Normal</option>
-       <option value="350">Rápido</option>
+       <option value="350">R\u00e1pido</option>
        <option value="150">Turbo</option>
      </select>
-     <div class="tb-lab" id="tlab">—</div>
+     <div class="tb-lab" id="tlab">\u2014</div>
    </div>
  </div>
 </div>
@@ -193,7 +193,7 @@ function zoom(){
 
 const leg=L.control({position:'bottomright'});
 leg.onAdd=()=>{const d=L.DomUtil.create('div','legend');
- d.innerHTML='<b>Precipitação mensal</b><br>'+CFG.rotulos.map((r,i)=>
+ d.innerHTML='<b>Precipita\u00e7\u00e3o mensal</b><br>'+CFG.rotulos.map((r,i)=>
   `<span class="sw" style="background:${CFG.cores[i]}"></span>${r}`).join('<br>');return d;};
 leg.addTo(map);
 
@@ -245,7 +245,7 @@ function sparkline(){
   const s=(N>0&&all.length>N)?all.slice(-N):all;
   const svg=document.getElementById('spark'); svg.innerHTML='';
   document.getElementById('sparkinfo').textContent=
-    (N>0&&all.length>N)?`últimos ${N} meses`:`${all.length} meses`;
+    (N>0&&all.length>N)?`\u00faltimos ${N} meses`:`${all.length} meses`;
   if(s.length<2) return;
   const W=svg.clientWidth||270,H=56,P=4;
   const mx=Math.max(...s.map(d=>d.v))*1.1;
@@ -273,20 +273,20 @@ function render(){
   const cl=(CFG.clim[selR.value]||{})[d.mes], an=document.getElementById('anom');
   if(cl){
     const dif=d.media-cl, pct=100*dif/cl;
-    an.textContent=`${dif>=0?'+':''}${dif.toFixed(1)} mm (${pct>=0?'+':''}${pct.toFixed(0)}%) vs. média de ${CFG.meses[d.mes-1].toLowerCase()}`;
+    an.textContent=`${dif>=0?'+':''}${dif.toFixed(1)} mm (${pct>=0?'+':''}${pct.toFixed(0)}%) vs. m\u00e9dia de ${CFG.meses[d.mes-1].toLowerCase()}`;
     an.style.color=dif<0?'#B84A00':'#0d6b8f';
   } else an.textContent='';
 
   const all=CFG.serie[selR.value]||[], rk=document.getElementById('rank');
   if(all.length>=24){
     const pos=all.filter(x=>x.v<d.media).length+1;
-    rk.textContent=`${pos}º mais seco de ${all.length}`;
+    rk.textContent=`${pos}\u00ba mais seco de ${all.length}`;
   } else rk.textContent='';
 
   document.getElementById('stats').innerHTML=[
-    ['Mediana',d.mediana.toFixed(1)+' mm'],['Mínimo',d.minimo.toFixed(1)+' mm'],
-    ['Máximo',d.maximo.toFixed(1)+' mm'],['Percentil 90',d.p90.toFixed(1)+' mm'],
-    ['Área com < 25 mm',d.seco.toFixed(1)+'%'],['Pixels válidos',d.n.toLocaleString('pt-BR')],
+    ['Mediana',d.mediana.toFixed(1)+' mm'],['M\u00ednimo',d.minimo.toFixed(1)+' mm'],
+    ['M\u00e1ximo',d.maximo.toFixed(1)+' mm'],['Percentil 90',d.p90.toFixed(1)+' mm'],
+    ['\u00c1rea com < 25 mm',d.seco.toFixed(1)+'%'],['Pixels v\u00e1lidos',d.n.toLocaleString('pt-BR')],
   ].map(([a,b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join('');
   document.getElementById('classes').innerHTML=CFG.rotulos.map((r,i)=>
     `<tr><td><span class="sw" style="background:${CFG.cores[i]}"></span>${r}</td>
@@ -297,7 +297,7 @@ function render(){
              dl.download=`${selR.value}_${d.ano}_${String(d.mes).padStart(2,'0')}.tif`;
              dl.textContent='Baixar GeoTIFF'; }
   else { dl.className='btn off'; dl.removeAttribute('href');
-         dl.textContent='GeoTIFF só nos anos recentes'; }
+         dl.textContent='GeoTIFF s\u00f3 nos anos recentes'; }
   sparkline();
   history.replaceState(null,'','#'+selR.value+'/'+p);
 }
@@ -305,11 +305,11 @@ function render(){
 const btn=document.getElementById('play'), spd=document.getElementById('speed');
 let timer=null;
 function tocando(){return timer!==null;}
-function parar(){clearInterval(timer);timer=null;btn.textContent='▶';}
+function parar(){clearInterval(timer);timer=null;btn.innerHTML='&#9654;';}
 function tocar(){
   if(PER.length<2) return;
   if(+sl.value>=PER.length-1) sl.value=0;
-  btn.textContent='❚❚';
+  btn.innerHTML='&#10074;&#10074;';
   timer=setInterval(()=>{
     if(+sl.value>=PER.length-1){parar();return;}
     sl.value=+sl.value+1; render();
